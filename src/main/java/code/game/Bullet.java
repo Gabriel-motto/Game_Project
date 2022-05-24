@@ -13,9 +13,10 @@ public class Bullet extends GameObject {
 	private float offY;
 
 	private int direction;
-	private float speed = 400;
+	private float speed = 600;
 
 	private Light light;
+	private Light light2;
 
 	public Bullet(int tileX, int tileY, float offX, float offY, int direction) {
 
@@ -88,7 +89,11 @@ public class Bullet extends GameObject {
 
 		light = new Light(20, 0xffff0000);
 		r.drawLight(light, (int) posX - 2, (int) posY - 2);
-		r.drawFillRect((int) posX - 2, (int) posY - 2, 10, 2, 0xffff0000);
+		if (direction==0) {
+			r.drawFillRect((int) posX - 2, (int) posY - 2, 2, 10, 0xffff0000);
+		} else {
+			r.drawFillRect((int) posX - 2, (int) posY - 2, 10, 2, 0xffff0000);
+		}
 	}
 
 }

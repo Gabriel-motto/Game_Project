@@ -95,7 +95,6 @@ public class GameManager extends AbstractGame {
 	}
 
 	public void loadLevel(String path) {
-
 		Image levelImage = new Image(path);
 
 		levelW = levelImage.getW();
@@ -103,15 +102,10 @@ public class GameManager extends AbstractGame {
 		collision = new boolean[levelW * levelH];
 
 		for (int y = 0; y < levelImage.getH(); y++) {
-
 			for (int x = 0; x < levelImage.getW(); x++) {
-
 				if (levelImage.getP()[x + y * levelImage.getW()] == 0xff000000) {
-
 					collision[x + y * levelImage.getW()] = true;
-
 				} else {
-
 					collision[x + y * levelImage.getW()] = false;
 				}
 			}
@@ -124,30 +118,22 @@ public class GameManager extends AbstractGame {
 	}
 
 	public GameObject getObject(String tag) {
-
 		for (int i = 0; i < objects.size(); i++) {
-
 			if (objects.get(i).getTag().equals(tag)) {
-
 				return objects.get(i);
 			}
 		}
-
 		return null;
 	}
 
 	public boolean getCollision(int x, int y) {
-
 		if (x < 0 || x >= levelW || y < 0 || y >= levelH) {
-
 			return true;
 		}
-
 		return collision[x + y * levelW];
 	}
 
 	public static void main(String[] args) {
-
 		GameEngine ge = new GameEngine(new GameManager());
 		ge.setWidth(320);
 		ge.setHeight(240);

@@ -2,7 +2,7 @@ package code.engine;
 
 import java.awt.event.*;
 
-public class Input implements KeyListener, MouseListener, MouseMotionListener{
+public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener{
 
 	private GameEngine ge;
 
@@ -38,7 +38,10 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener{
 		mouseY = 0;
 		scroll = 0;
 
-		
+		ge.getWindow().getCanvas().addKeyListener(this);
+		ge.getWindow().getCanvas().addMouseListener(this);
+		ge.getWindow().getCanvas().addMouseMotionListener(this);
+		ge.getWindow().getCanvas().addMouseWheelListener(this);
 	}
 
 	public void update() {
@@ -116,6 +119,11 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		keys[e.getKeyCode()] = true;
+		keys[e.getKeyCode()] = false;
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		scroll = e.getWheelRotation();
 	}
 }

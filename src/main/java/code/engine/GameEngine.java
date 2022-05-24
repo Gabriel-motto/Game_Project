@@ -5,11 +5,11 @@ public class GameEngine implements Runnable {
 	private Thread thread;
 	private Window window;
 	private Renderer renderer;
-	private Input inp;
+	private Input input;
 	private AbstractGame game;
 
 	// true - esta ejecutando
-	private boolean flag = false;
+	private boolean running = false;
 
 	// Limita fps a 60
 	private final double fps_cap = 1.0 / 60.0;
@@ -58,7 +58,7 @@ public class GameEngine implements Runnable {
 	}
 
 	public Input getInput() {
-		return inp;
+		return input;
 	}
 
 	public Renderer getRenderer() {
@@ -77,7 +77,7 @@ public class GameEngine implements Runnable {
 	public void start() {
 		window = new Window(this);
 		renderer = new Renderer(this);
-		inp = new Input(this);
+		input = new Input(this);
 		thread = new Thread(this);
 		thread.run();
 	}
@@ -89,7 +89,7 @@ public class GameEngine implements Runnable {
 	}
 
 	public void run() {
-		flag = true;
+		running = true;
 
 		boolean render = false;
 
@@ -103,13 +103,16 @@ public class GameEngine implements Runnable {
 
 		game.init(this);
 
-		while (flag) {
+		while (running) {
 			// true - fps limite OFF
 			// flase - fps limite ON
 			render = true;
 
 			firstTime = System.nanoTime() / 1000000000.0;
 			passedTime = firstTime - lastTime;
+			lastTime = firstTime;
+
+			unprocessedTime += passedTime;
 			frameTime += passedTime;
 
 			while (unprocessedTime >= fps_cap) {
@@ -118,7 +121,7 @@ public class GameEngine implements Runnable {
 
 				game.update(this, (float) fps_cap);
 
-				inp.update();
+				input.update();
 
 				if (frameTime >= 1.0) {
 					frameTime = 0;
