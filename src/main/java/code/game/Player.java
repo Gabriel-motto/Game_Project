@@ -21,6 +21,8 @@ public class Player extends GameObject {
 	private boolean ground = false;
 
 	private float fallDistance = 0;
+	private boolean doubleJump = true;
+	private boolean limitJump = true;
 
 	private Light light;
 
@@ -40,96 +42,76 @@ public class Player extends GameObject {
 	@Override
 	public void update(GameEngine ge, GameManager gm, float dt) {
 
-		// #region Left and Right
+		// #region Movimiento derecha-izquierda
 
 		if (ge.getInput().key(KeyEvent.VK_RIGHT) || ge.getInput().key(KeyEvent.VK_L)) {
-			if (gm.getCollision(tileX + 1, tileY)
+			if (ge.getInput().key(KeyEvent.VK_SHIFT)) {
+				System.err.println("shift");
+				offX += dt * speed*2;
+				if (gm.getCollision(tileX + 1, tileY)
+						|| gm.getCollision(tileX + 1, tileY + (int) Math.signum((int) offY))) {
+					if (offX < 0) {
+						offX += dt * speed*2;
+						System.err.println(offX);
+						if (offX > 0) {
+							offX = 0;
+						}
+					} else {
+						offX = 0;
+					}
+				}
+			} else if (gm.getCollision(tileX + 1, tileY)
 					|| gm.getCollision(tileX + 1, tileY + (int) Math.signum((int) offY))) {
-
 				if (offX < 0) {
-
 					offX += dt * speed;
-
 					if (offX > 0) {
 						offX = 0;
 					}
-
 				} else {
 					offX = 0;
 				}
-			}
-			else {
+			} else {
 				offX += dt * speed;
 			}
-			// if (ge.getInput().key(KeyEvent.VK_SHIFT)) {
-			// 	//System.err.println("uwu");
-			// 	if (gm.getCollision(tileX + 1, tileY)
-			// 			|| gm.getCollision(tileX + 1, tileY + (int) Math.signum((int) offY))) {
-	
-			// 		if (offX < 0) {
-			// 			offX += dt * speed;
-			// 			System.err.println(offX);
-	
-			// 			if (offX > 0) {
-			// 				offX = 0;
-			// 			}
-	
-			// 		} else {
-			// 			offX = 0;
-			// 		}
-			// 	}
-			// } else {
-			// 	offX += dt * speed;
-			// 	System.err.println(offX);
-			// }
 		}
 
-
 		if (ge.getInput().key(KeyEvent.VK_LEFT) || ge.getInput().key(KeyEvent.VK_J)) {
-
-			if (gm.getCollision(tileX - 1, tileY)
+			if (ge.getInput().key(KeyEvent.VK_SHIFT)) {
+				System.err.println("shift");
+				offX -= dt * speed*2;
+				if (gm.getCollision(tileX - 1, tileY)
+						|| gm.getCollision(tileX - 1, tileY + (int) Math.signum((int) offY))) {
+					if (offX > 0) {
+						offX -= dt * speed;
+						System.err.println(offX);
+						if (offX < 0) {
+							offX = 0;
+						}
+	
+					} else {
+						offX = 0;
+					}
+				}
+			} else if (gm.getCollision(tileX - 1, tileY)
 					|| gm.getCollision(tileX - 1, tileY + (int) Math.signum((int) offY))) {
-
 				if (offX > 0) {
 					offX -= dt * speed;
-
 					if (offX < 0) {
 						offX = 0;
 					}
-
 				} else {
 					offX = 0;
 				}
-
-			}
-			else {
+			} else {
 				offX -= dt * speed;
 			}
-			// if (ge.getInput().key(KeyEvent.VK_SHIFT)) {
-			// 	//System.err.println("uwu");
-			// 	if (gm.getCollision(tileX - 1, tileY)
-			// 			|| gm.getCollision(tileX - 1, tileY + (int) Math.signum((int) offY))) {
-	
-			// 		if (offX > 0) {
-			// 			offX -= dt * speed;
-			// 			System.err.println(offX);
-	
-			// 			if (offX < 0) {
-			// 				offX = 0;
-			// 			}
-	
-			// 		} else {
-			// 			offX = 0;
-			// 		}
-			// 	}
-			// } 
-			// else {
-			// 	offX -= dt * speed;
-			// 	System.err.println(offX);
-			// }
 		}
+		
+		// #endregion End of Left and Right
 
-		// To fix jump in the air
+		// #region Jump and Gravity
+
+		// Para no saltar mid-air
 
 		// if (fallDistance > 0) {
 		// if ((gm.getCollision(tileX, tileY + 1) || gm.getCollision(tileX + (int)
@@ -142,29 +124,38 @@ public class Player extends GameObject {
 		// ground = false;
 		// }
 
-		// #endregion End of Left and Right
-
-		// #region Jump and Gravity
-
 		fallDistance += dt * fallSpeed;
 
-		int doubleJump = 0;
-		if (ge.getInput().key(KeyEvent.VK_SPACE) && ground) {
-			fallDistance = jump;
+		if (ge.getInput().key(KeyEvent.VK_SPACE) && limitJump) {
+
+			if (!doubleJump && !limitJump) {
+				fallDistance += jump;
+				System.out.println("double");
+				
+			} else {
+				fallDistance = jump;
+				doubleJump = false;
+				limitJump = false;
+				ground = false;
+			}
+			
+			System.out.println("double"+doubleJump);
+			System.out.println("limit"+limitJump);
+
+			// fallDistance = jump;
+			// doubleJump = false;
 			// ground = false;
-			doubleJump++;
-			// if (doubleJump==1 && ge.getInput().key(KeyEvent.VK_SPACE)) {
-			// 	System.out.println(doubleJump);
-			// 	fallDistance = jump;
-			// 	doubleJump++;
+			// if (ge.getInput().key(KeyEvent.VK_SPACE) && !doubleJump) {
+			// 	System.out.println("uwu");
+			// 	fallDistance += jump;
+			// 	doubleJump = true;
 			// }
-			ground = false;
+			// limitJump = false;
 		}
 
 		offY += fallDistance;
 
 		if (fallDistance < 0) {
-
 			if ((gm.getCollision(tileX, tileY - 1) ||
 					gm.getCollision(tileX + (int) Math.signum((int) offX), tileY - 1)) &&
 					offY < 0) {
@@ -183,12 +174,13 @@ public class Player extends GameObject {
 				fallDistance = 0;
 				offY = 0;
 				ground = true;
+				limitJump = true;
 			}
 		}
 
-		// #endregion End of Jump and Gravity
+		// #endregion
 
-		// Final position
+		//#region Posicion final
 
 		if (offY > GameManager.TS / 2) {
 
@@ -217,7 +209,10 @@ public class Player extends GameObject {
 		posX = tileX * GameManager.TS + offX;
 		posY = tileY * GameManager.TS + offY;
 
-		// Shooting
+		//#endregion
+		
+		//#region Disparar
+
 		if (ge.getInput().key(KeyEvent.VK_W)) {
 			
 			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 0));
@@ -232,6 +227,7 @@ public class Player extends GameObject {
 			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 3));
 		}
 
+		//#endregion
 	}
 
 	@Override
@@ -240,5 +236,4 @@ public class Player extends GameObject {
 		r.drawLight(light, (int) posX + 8, (int) posY + 8);
 		r.drawFillRect((int) posX, (int) posY, width, height, 0xff00ff00);
 	}
-
 }

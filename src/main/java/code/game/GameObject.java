@@ -18,8 +18,7 @@ public abstract class GameObject {
 
 	public abstract void render(GameEngine ge, Renderer r);
 
-	// Getters & Setters
-
+	//#region setter y getters
 	public String getTag() {
 		return tag;
 	}
@@ -67,5 +66,5 @@ public abstract class GameObject {
 	public void setDead(boolean dead) {
 		this.dead = dead;
 	}
-
+	//#endregion
 }

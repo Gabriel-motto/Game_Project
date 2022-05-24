@@ -41,20 +41,14 @@ public class GameManager extends AbstractGame {
 
 	@Override
 	public void update(GameEngine ge, float dt) {
-
 		for (int i = 0; i < objects.size(); i++) {
-
 			objects.get(i).update(ge, this, dt);
-
 			if (objects.get(i).isDead()) {
-
 				objects.remove(i);
 				i--;
 			}
 		}
-
 		camera.update(ge, this, dt);
-
 	}
 
 	@Override
@@ -71,27 +65,9 @@ public class GameManager extends AbstractGame {
 		r.drawImage(skyImage, 0, 0);
 		r.drawImage(levelImage, 0, 0);
 
-		
-
-		// for (int y = 0; y < levelH; y++) {
-
-		// 	for (int x = 0; x < levelW; x++) {
-
-		// 		if (collision[x + y * levelW]) {
-
-		// 			r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
-
-		// 		} else {
-		// 			r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
-
-		// 		}
-		// 	}
-		// }
-
 		for (GameObject obj : objects) {
 			obj.render(ge, r);
 		}
-
 	}
 
 	public void loadLevel(String path) {
