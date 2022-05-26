@@ -13,7 +13,7 @@ public class Bullet extends GameObject {
 	private float offY;
 
 	private int direction;
-	private float speed = 10;
+	private float speed = 600;
 
 	private Light light;
 	// private Light light2;

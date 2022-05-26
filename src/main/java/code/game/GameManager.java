@@ -10,7 +10,7 @@ public class GameManager extends AbstractGame {
 
 	public static final int TS = 16;
 
-	private Image levelImage = new Image("/resources/img/lev.png");
+	private Image levelImage = new Image("/resources/img/LvlMap.png");
 	private Image skyImage = new Image("/resources/img/sky.png");
 
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
@@ -23,10 +23,10 @@ public class GameManager extends AbstractGame {
 	// private SoundClip backSong = new SoundClip("/resources/audio/test.wav");
 
 	public GameManager() {
-		objects.add(new Player(3, 3));
-		loadLevel("/resources/img/levelMap.png");
+		objects.add(new Player(3, 34));
+		loadLevel("/resources/img/ConceptMap.png");
 		camera = new Camera("player");
-		// levelImag.setAlpha(true);
+		// 	levelImag.setAlpha(true);
 		
 		levelImage.setLightBlock((int)Light.NONE);
 	}
