@@ -14,15 +14,18 @@ public class Enemy extends GameObject{
 	private float offY;
 
 	private float speed = 100;
+	private boolean direction = true;
 
 	private Light light;
 
-	public Enemy(int posX, int posY) {
+	private float fallDistance = 0;
+
+	public Enemy(int posX, int posY, int finalEnemyPos) {
 		this.tag = "enemy";
 		this.enemyX = posX; // 38
 		this.enemyY = posY; // 27
 		this.initialEnemyPos = posX;
-		this.finalEnemyPos = 46;
+		this.finalEnemyPos = finalEnemyPos;
 		this.offX = 0;
 		this.offY = 0;
 		this.posX = posX * GameManager.pixelSize;
@@ -36,42 +39,56 @@ public class Enemy extends GameObject{
 		//#region Movimiento
 
 		// Movimiento hacia la derecha
-		if (enemyX == initialEnemyPos) {
-			if (gm.getCollision(enemyX + 1, enemyY)
-					|| gm.getCollision(enemyX + 1, enemyY + (int) Math.signum((int) offY))) {
-						
-				if (offX < 0) {
-					
-					offX += dt * speed;
-					if (offX > 0) {
-						offX = 0;
-					}
-				} else {
-					System.err.println("enemy");
-					offX = 0;
-				}
-			} else {
-				
-				offX += dt * speed;
+		if (enemyX >= initialEnemyPos && direction) {
+			offX += dt * speed;
+			if (enemyX == finalEnemyPos) {
+				direction = false;
 			}
+
 		}
 
 		// Movimiento hacia la izquierda
-		if (enemyX == finalEnemyPos) {
-			if (gm.getCollision(enemyX - 1, enemyY)
-					|| gm.getCollision(enemyX - 1, enemyY + (int) Math.signum((int) offY))) {
-				if (offX > 0) {
-					offX -= dt * speed;
-					if (offX < 0) {
-						offX = 0;
-					}
-				} else {
-					offX = 0;
-				}
-			} else {
-				offX -= dt * speed;
+		if (enemyX <= finalEnemyPos&& !direction) {
+			offX -= dt * speed;
+			if (enemyX == initialEnemyPos) {
+				direction = true;
 			}
 		}
+
+		//#endregion
+
+		//#region Gravedad
+
+		if (fallDistance < 0) {
+			if ((gm.getCollision(enemyX, enemyY - 1) ||
+					gm.getCollision(enemyX + (int) Math.signum((int) offX), enemyY - 1)) &&
+					offY < 0) {
+				fallDistance = 0;
+				offY = 0;
+			}
+		}
+		if (fallDistance > 0) {
+			if ((gm.getCollision(enemyX,enemyY + 1) || gm.getCollision(enemyX + (int) Math.signum((int) offX),enemyY + 1))
+					&& offY > 0) {
+				fallDistance = 0;
+				offY = 0;
+			}
+		}
+
+		//#endregion
+
+		//#region Posicion final
+
+		if (offX > GameManager.pixelSize / 2) {
+			enemyX++;
+			offX -= GameManager.pixelSize;
+		}
+
+		if (offX < -GameManager.pixelSize / 2) {
+			enemyX--;
+			offX += GameManager.pixelSize;
+		}
+		posX = enemyX * GameManager.pixelSize + offX;
 
 		//#endregion
 	}

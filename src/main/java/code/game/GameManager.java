@@ -25,7 +25,8 @@ public class GameManager extends AbstractGame {
 
 	public GameManager() {
 		objects.add(new Player(3, 34));
-		objects.add(new Enemy(38, 27));
+		objects.add(new Enemy(38, 27, 46));
+		objects.add(new Enemy(12, 13, 17));
 		loadLevel("/resources/img/ConceptMap.png");
 		camera = new Camera("player");
 		// 	levelImag.setAlpha(true);

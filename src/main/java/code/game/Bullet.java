@@ -19,7 +19,7 @@ public class Bullet extends GameObject {
 	// private Light light2;
 
 	public Bullet(int tileX, int tileY, float offX, float offY, int direction) {
-
+		this.tag = "bullet";
 		this.direction = direction;
 		this.tileX = tileX;
 		this.tileY = tileY;
@@ -51,37 +51,44 @@ public class Bullet extends GameObject {
 		// Final position
 
 		if (offY > GameManager.pixelSize) {
-
 			tileY++;
 			offY -= GameManager.pixelSize;
 		}
 
 		if (offY < 0) {
-
 			tileY--;
 			offY += GameManager.pixelSize;
 		}
 
 		if (offX > GameManager.pixelSize) {
-
 			tileX++;
 			offX -= GameManager.pixelSize;
 		}
 
 		if (offX < 0) {
-
 			tileX--;
 			offX += GameManager.pixelSize;
 		}
 
-		if (gm.getCollision(tileX, tileY)) {
+		//System.err.println("enemigo"+(int) gm.getObject("enemy").getPosX() / GameManager.pixelSize);
+		//System.err.println((int) (gm.getObject("enemy").getPosY() / GameManager.pixelSize));
+		//System.err.println("bala"+tileX);
+		//System.err.println(tileY);
 
+		if (gm.getCollision(tileX, tileY) ||
+			((int) (gm.getObject("enemy").getPosX() / GameManager.pixelSize) == tileX
+			&& (int) (gm.getObject("enemy").getPosY() / GameManager.pixelSize) == tileY)) {
 			this.dead = true;
+			//System.err.println(this.dead);
+		}
+
+		if (((int) (gm.getObject("enemy").getPosX() / GameManager.pixelSize) == tileX
+		&& (int) (gm.getObject("enemy").getPosY() / GameManager.pixelSize) == tileY)) {
+			gm.getObject("enemy").dead = true;
 		}
 
 		posX = tileX * GameManager.pixelSize + offX;
 		posY = tileY * GameManager.pixelSize + offY;
-
 	}
 
 	@Override

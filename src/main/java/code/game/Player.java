@@ -45,13 +45,13 @@ public class Player extends GameObject {
 
 		if (ge.getInput().key(KeyEvent.VK_RIGHT) || ge.getInput().key(KeyEvent.VK_L)) {
 			if (ge.getInput().key(KeyEvent.VK_SHIFT)) {
-				System.err.println("shift");
+				//System.err.println("shift");
 				offX += dt * speed*2;
 				if (gm.getCollision(playerX + 1, playerY)
 						|| gm.getCollision(playerX + 1, playerY + (int) Math.signum((int) offY))) {
 					if (offX < 0) {
 						offX += dt * speed*2;
-						System.err.println(offX);
+						//System.err.println(offX);
 						if (offX > 0) {
 							offX = 0;
 						}
@@ -71,18 +71,19 @@ public class Player extends GameObject {
 				}
 			} else {
 				offX += dt * speed;
+				//System.err.println(offX);
 			}
 		}
 
 		if (ge.getInput().key(KeyEvent.VK_LEFT) || ge.getInput().key(KeyEvent.VK_J)) {
 			if (ge.getInput().key(KeyEvent.VK_SHIFT)) {
-				System.err.println("shift");
+				//System.err.println("shift");
 				offX -= dt * speed*2;
 				if (gm.getCollision(playerX - 1, playerY)
 						|| gm.getCollision(playerX - 1, playerY + (int) Math.signum((int) offY))) {
 					if (offX > 0) {
 						offX -= dt * speed;
-						System.err.println(offX);
+						//System.err.println(offX);
 						if (offX < 0) {
 							offX = 0;
 						}
@@ -105,23 +106,25 @@ public class Player extends GameObject {
 				offX -= dt * speed;
 			}
 		}
+
+		//System.err.println(this.posX);
 		
 		// #endregion End of Left and Right
 
 		// #region Jump and Gravity
 
-		// Para no saltar mid-air
+				// Para no saltar mid-air
 
-		// if (fallDistance > 0) {
-		// if ((gm.getCollision(playerX, playerY + 1) || gm.getCollision(playerX + (int)
-		// Math.signum((int) offX), playerY + 1))
-		// && offY > 0) {
-		// fallDistance = 0;
-		// offY = 0;
-		// ground = true;
-		// } else
-		// ground = false;
-		// }
+				// if (fallDistance > 0) {
+				// if ((gm.getCollision(playerX, playerY + 1) || gm.getCollision(playerX + (int)
+				// Math.signum((int) offX), playerY + 1))
+				// && offY > 0) {
+				// fallDistance = 0;
+				// offY = 0;
+				// ground = true;
+				// } else
+				// ground = false;
+				// }
 
 		fallDistance += dt * fallSpeed;
 
@@ -165,9 +168,6 @@ public class Player extends GameObject {
 		}
 
 		if (fallDistance > 0) {
-
-			// System.err.println(gm.getCollision(playerX, playerY + 1));
-
 			if ((gm.getCollision(playerX, playerY + 1) || gm.getCollision(playerX + (int) Math.signum((int) offX), playerY + 1))
 					&& offY > 0) {
 				fallDistance = 0;
@@ -182,25 +182,21 @@ public class Player extends GameObject {
 		//#region Posicion final
 
 		if (offY > GameManager.pixelSize / 2) {
-
 			playerY++;
 			offY -= GameManager.pixelSize;
 		}
 
 		if (offY < -GameManager.pixelSize / 2) {
-
 			playerY--;
 			offY += GameManager.pixelSize;
 		}
 
 		if (offX > GameManager.pixelSize / 2) {
-
 			playerX++;
 			offX -= GameManager.pixelSize;
 		}
 
 		if (offX < -GameManager.pixelSize / 2) {
-
 			playerX--;
 			offX += GameManager.pixelSize;
 		}
@@ -212,17 +208,16 @@ public class Player extends GameObject {
 		
 		//#region Disparar
 
-		if (ge.getInput().key(KeyEvent.VK_W)) {
-			
+		if (ge.getInput().keyDown(KeyEvent.VK_W)) {
 			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 0));
 		}
-		if (ge.getInput().key(KeyEvent.VK_D)) {
+		if (ge.getInput().keyDown(KeyEvent.VK_D)) {
 			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 1));
 		}
-		if (ge.getInput().key(KeyEvent.VK_S)) {
+		if (ge.getInput().keyDown(KeyEvent.VK_S)) {
 			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 2));
 		}
-		if (ge.getInput().key(KeyEvent.VK_A)) {
+		if (ge.getInput().keyDown(KeyEvent.VK_A)) {
 			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 3));
 		}
 
