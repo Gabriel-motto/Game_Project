@@ -7,9 +7,9 @@ import code.engine.Renderer;
 import code.engine.gfx.Light;
 
 public class Player extends GameObject {
-
-	private int tileX;
-	private int tileY;
+	// Posicion del jugador
+	private int playerX;
+	private int playerY;
 
 	private float offX;
 	private float offY;
@@ -27,16 +27,15 @@ public class Player extends GameObject {
 	private Light light;
 
 	public Player(int posX, int posY) {
-
 		this.tag = "player";
-		this.tileX = posX;
-		this.tileY = posY;
+		this.playerX = posX;
+		this.playerY = posY;
 		this.offX = 0;
 		this.offY = 0;
-		this.posX = posX * GameManager.TS;
-		this.posY = posY * GameManager.TS;
-		this.width = GameManager.TS;
-		this.height = GameManager.TS;
+		this.posX = posX * GameManager.pixelSize;
+		this.posY = posY * GameManager.pixelSize;
+		this.width = GameManager.pixelSize;
+		this.height = GameManager.pixelSize;
 	}
 
 	@Override
@@ -48,8 +47,8 @@ public class Player extends GameObject {
 			if (ge.getInput().key(KeyEvent.VK_SHIFT)) {
 				System.err.println("shift");
 				offX += dt * speed*2;
-				if (gm.getCollision(tileX + 1, tileY)
-						|| gm.getCollision(tileX + 1, tileY + (int) Math.signum((int) offY))) {
+				if (gm.getCollision(playerX + 1, playerY)
+						|| gm.getCollision(playerX + 1, playerY + (int) Math.signum((int) offY))) {
 					if (offX < 0) {
 						offX += dt * speed*2;
 						System.err.println(offX);
@@ -60,8 +59,8 @@ public class Player extends GameObject {
 						offX = 0;
 					}
 				}
-			} else if (gm.getCollision(tileX + 1, tileY)
-					|| gm.getCollision(tileX + 1, tileY + (int) Math.signum((int) offY))) {
+			} else if (gm.getCollision(playerX + 1, playerY)
+					|| gm.getCollision(playerX + 1, playerY + (int) Math.signum((int) offY))) {
 				if (offX < 0) {
 					offX += dt * speed;
 					if (offX > 0) {
@@ -79,8 +78,8 @@ public class Player extends GameObject {
 			if (ge.getInput().key(KeyEvent.VK_SHIFT)) {
 				System.err.println("shift");
 				offX -= dt * speed*2;
-				if (gm.getCollision(tileX - 1, tileY)
-						|| gm.getCollision(tileX - 1, tileY + (int) Math.signum((int) offY))) {
+				if (gm.getCollision(playerX - 1, playerY)
+						|| gm.getCollision(playerX - 1, playerY + (int) Math.signum((int) offY))) {
 					if (offX > 0) {
 						offX -= dt * speed;
 						System.err.println(offX);
@@ -92,8 +91,8 @@ public class Player extends GameObject {
 						offX = 0;
 					}
 				}
-			} else if (gm.getCollision(tileX - 1, tileY)
-					|| gm.getCollision(tileX - 1, tileY + (int) Math.signum((int) offY))) {
+			} else if (gm.getCollision(playerX - 1, playerY)
+					|| gm.getCollision(playerX - 1, playerY + (int) Math.signum((int) offY))) {
 				if (offX > 0) {
 					offX -= dt * speed;
 					if (offX < 0) {
@@ -114,8 +113,8 @@ public class Player extends GameObject {
 		// Para no saltar mid-air
 
 		// if (fallDistance > 0) {
-		// if ((gm.getCollision(tileX, tileY + 1) || gm.getCollision(tileX + (int)
-		// Math.signum((int) offX), tileY + 1))
+		// if ((gm.getCollision(playerX, playerY + 1) || gm.getCollision(playerX + (int)
+		// Math.signum((int) offX), playerY + 1))
 		// && offY > 0) {
 		// fallDistance = 0;
 		// offY = 0;
@@ -156,8 +155,8 @@ public class Player extends GameObject {
 		offY += fallDistance;
 
 		if (fallDistance < 0) {
-			if ((gm.getCollision(tileX, tileY - 1) ||
-					gm.getCollision(tileX + (int) Math.signum((int) offX), tileY - 1)) &&
+			if ((gm.getCollision(playerX, playerY - 1) ||
+					gm.getCollision(playerX + (int) Math.signum((int) offX), playerY - 1)) &&
 					offY < 0) {
 				fallDistance = 0;
 				offY = 0;
@@ -167,9 +166,9 @@ public class Player extends GameObject {
 
 		if (fallDistance > 0) {
 
-			// System.err.println(gm.getCollision(tileX, tileY + 1));
+			// System.err.println(gm.getCollision(playerX, playerY + 1));
 
-			if ((gm.getCollision(tileX, tileY + 1) || gm.getCollision(tileX + (int) Math.signum((int) offX), tileY + 1))
+			if ((gm.getCollision(playerX, playerY + 1) || gm.getCollision(playerX + (int) Math.signum((int) offX), playerY + 1))
 					&& offY > 0) {
 				fallDistance = 0;
 				offY = 0;
@@ -182,32 +181,32 @@ public class Player extends GameObject {
 
 		//#region Posicion final
 
-		if (offY > GameManager.TS / 2) {
+		if (offY > GameManager.pixelSize / 2) {
 
-			tileY++;
-			offY -= GameManager.TS;
+			playerY++;
+			offY -= GameManager.pixelSize;
 		}
 
-		if (offY < -GameManager.TS / 2) {
+		if (offY < -GameManager.pixelSize / 2) {
 
-			tileY--;
-			offY += GameManager.TS;
+			playerY--;
+			offY += GameManager.pixelSize;
 		}
 
-		if (offX > GameManager.TS / 2) {
+		if (offX > GameManager.pixelSize / 2) {
 
-			tileX++;
-			offX -= GameManager.TS;
+			playerX++;
+			offX -= GameManager.pixelSize;
 		}
 
-		if (offX < -GameManager.TS / 2) {
+		if (offX < -GameManager.pixelSize / 2) {
 
-			tileX--;
-			offX += GameManager.TS;
+			playerX--;
+			offX += GameManager.pixelSize;
 		}
 
-		posX = tileX * GameManager.TS + offX;
-		posY = tileY * GameManager.TS + offY;
+		posX = playerX * GameManager.pixelSize + offX;
+		posY = playerY * GameManager.pixelSize + offY;
 
 		//#endregion
 		
@@ -215,16 +214,16 @@ public class Player extends GameObject {
 
 		if (ge.getInput().key(KeyEvent.VK_W)) {
 			
-			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 0));
+			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 0));
 		}
 		if (ge.getInput().key(KeyEvent.VK_D)) {
-			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 1));
+			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 1));
 		}
 		if (ge.getInput().key(KeyEvent.VK_S)) {
-			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 2));
+			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 2));
 		}
 		if (ge.getInput().key(KeyEvent.VK_A)) {
-			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 3));
+			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 3));
 		}
 
 		//#endregion

@@ -25,8 +25,8 @@ public class Bullet extends GameObject {
 		this.tileY = tileY;
 		this.offX = offX;
 		this.offY = offY;
-		posX = tileX * GameManager.TS + offX;
-		posY = tileY * GameManager.TS + offY;
+		posX = tileX * GameManager.pixelSize + offX;
+		posY = tileY * GameManager.pixelSize + offY;
 
 	}
 
@@ -50,28 +50,28 @@ public class Bullet extends GameObject {
 
 		// Final position
 
-		if (offY > GameManager.TS) {
+		if (offY > GameManager.pixelSize) {
 
 			tileY++;
-			offY -= GameManager.TS;
+			offY -= GameManager.pixelSize;
 		}
 
 		if (offY < 0) {
 
 			tileY--;
-			offY += GameManager.TS;
+			offY += GameManager.pixelSize;
 		}
 
-		if (offX > GameManager.TS) {
+		if (offX > GameManager.pixelSize) {
 
 			tileX++;
-			offX -= GameManager.TS;
+			offX -= GameManager.pixelSize;
 		}
 
 		if (offX < 0) {
 
 			tileX--;
-			offX += GameManager.TS;
+			offX += GameManager.pixelSize;
 		}
 
 		if (gm.getCollision(tileX, tileY)) {
@@ -79,8 +79,8 @@ public class Bullet extends GameObject {
 			this.dead = true;
 		}
 
-		posX = tileX * GameManager.TS + offX;
-		posY = tileY * GameManager.TS + offY;
+		posX = tileX * GameManager.pixelSize + offX;
+		posY = tileY * GameManager.pixelSize + offY;
 
 	}
 

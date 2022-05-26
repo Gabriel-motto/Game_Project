@@ -8,7 +8,8 @@ import code.engine.gfx.*;
 
 public class GameManager extends AbstractGame {
 
-	public static final int TS = 16;
+	// Tamaño de los pixeles
+	public static final int pixelSize = 16;
 
 	private Image levelImage = new Image("/resources/img/LvlMap.png");
 	private Image skyImage = new Image("/resources/img/sky.png");
@@ -24,6 +25,7 @@ public class GameManager extends AbstractGame {
 
 	public GameManager() {
 		objects.add(new Player(3, 34));
+		objects.add(new Enemy(38, 27));
 		loadLevel("/resources/img/ConceptMap.png");
 		camera = new Camera("player");
 		// 	levelImag.setAlpha(true);
