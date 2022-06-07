@@ -25,8 +25,8 @@ public class GameManager extends AbstractGame {
 
 	public GameManager() {
 		objects.add(new Player(3, 34));
-		objects.add(new Enemy(38, 27, 46));
-		objects.add(new Enemy(12, 13, 17));
+		objects.add(new Enemy(38, 27, 46, 1));
+		objects.add(new Enemy(12, 13, 17, 2));
 		loadLevel("/resources/img/ConceptMap.png");
 		camera = new Camera("player");
 		// 	levelImag.setAlpha(true);
@@ -99,6 +99,15 @@ public class GameManager extends AbstractGame {
 	public GameObject getObject(String tag) {
 		for (int i = 0; i < objects.size(); i++) {
 			if (objects.get(i).getTag().equals(tag)) {
+				return objects.get(i);
+			}
+		}
+		return null;
+	}
+
+	public GameObject getNumber(int number) {
+		for (int i = 0; i < objects.size(); i++) {
+			if (objects.get(i).getNumber() == number) {
 				return objects.get(i);
 			}
 		}

@@ -20,10 +20,11 @@ public class Enemy extends GameObject{
 
 	private float fallDistance = 0;
 
-	public Enemy(int posX, int posY, int finalEnemyPos) {
+	public Enemy(int posX, int posY, int finalEnemyPos, int enemyNumber) {
 		this.tag = "enemy";
-		this.enemyX = posX; // 38
-		this.enemyY = posY; // 27
+		this.number = enemyNumber; // 1, 2
+		this.enemyX = posX; // 38 , 12
+		this.enemyY = posY; // 27 , 13
 		this.initialEnemyPos = posX;
 		this.finalEnemyPos = finalEnemyPos;
 		this.offX = 0;

@@ -6,6 +6,7 @@ import code.engine.Renderer;
 public abstract class GameObject {
 
 	protected String tag;
+	protected int number;
 
 	protected float posX;
 	protected float posY;
@@ -65,6 +66,14 @@ public abstract class GameObject {
 
 	public void setDead(boolean dead) {
 		this.dead = dead;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 	//#endregion
 }

@@ -75,17 +75,21 @@ public class Bullet extends GameObject {
 		//System.err.println("bala"+tileX);
 		//System.err.println(tileY);
 
-		if (gm.getCollision(tileX, tileY) ||
+		try {
+			// Desaparición de la bala
+			if (gm.getCollision(tileX, tileY) ||
 			((int) (gm.getObject("enemy").getPosX() / GameManager.pixelSize) == tileX
 			&& (int) (gm.getObject("enemy").getPosY() / GameManager.pixelSize) == tileY)) {
-			this.dead = true;
-			//System.err.println(this.dead);
-		}
+				this.dead = true;
+				//System.err.println(this.dead);
+			}
 
-		if (((int) (gm.getObject("enemy").getPosX() / GameManager.pixelSize) == tileX
-		&& (int) (gm.getObject("enemy").getPosY() / GameManager.pixelSize) == tileY)) {
-			gm.getObject("enemy").dead = true;
-		}
+			// Desaparición del enemigo
+			if (((int) (gm.getNumber(number).getPosX() / GameManager.pixelSize) == tileX
+			&& (int) (gm.getObject("enemy").getPosY() / GameManager.pixelSize) == tileY)) {
+				gm.getObject("enemy").dead = true;
+			}
+		} catch (NullPointerException e) {}
 
 		posX = tileX * GameManager.pixelSize + offX;
 		posY = tileY * GameManager.pixelSize + offY;

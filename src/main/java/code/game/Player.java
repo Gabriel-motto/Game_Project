@@ -21,7 +21,6 @@ public class Player extends GameObject {
 	private boolean ground = false;
 
 	private float fallDistance = 0;
-	private boolean doubleJump = true;
 	private boolean limitJump = true;
 
 	private Light light;
@@ -130,18 +129,14 @@ public class Player extends GameObject {
 
 		if (ge.getInput().key(KeyEvent.VK_SPACE) && limitJump) {
 
-			if (!doubleJump && !limitJump) {
-				fallDistance += jump;
-				System.out.println("double");
-				
-			} else {
+			if (ground) {
 				fallDistance = jump;
-				doubleJump = false;
-				limitJump = false;
+			} else {
+				fallDistance += jump;
+				limitJump = true;
 				ground = false;
 			}
 			
-			System.out.println("double"+doubleJump);
 			System.out.println("limit"+limitJump);
 
 			// fallDistance = jump;
