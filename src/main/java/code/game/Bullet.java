@@ -13,7 +13,7 @@ public class Bullet extends GameObject {
 	private float offY;
 
 	private int direction;
-	private float speed = 600;
+	private float speed = 400;
 
 	private Light light;
 	// private Light light2;
@@ -75,21 +75,27 @@ public class Bullet extends GameObject {
 		//System.err.println("bala"+tileX);
 		//System.err.println(tileY);
 
-		try {
-			// Desaparición de la bala
-			if (gm.getCollision(tileX, tileY) ||
-			((int) (gm.getObject("enemy").getPosX() / GameManager.pixelSize) == tileX
-			&& (int) (gm.getObject("enemy").getPosY() / GameManager.pixelSize) == tileY)) {
-				this.dead = true;
-				//System.err.println(this.dead);
-			}
 
-			// Desaparición del enemigo
-			if (((int) (gm.getNumber(number).getPosX() / GameManager.pixelSize) == tileX
-			&& (int) (gm.getObject("enemy").getPosY() / GameManager.pixelSize) == tileY)) {
-				gm.getObject("enemy").dead = true;
-			}
-		} catch (NullPointerException e) {}
+		for (int i = 0; i < gm.numEnemigos; i++) {
+			try {
+			
+				System.err.println(i);
+
+				// Desaparición de la bala
+				if (gm.getCollision(tileX, tileY) ||
+				((int) (gm.getObject("enemy"+i).getPosX() / GameManager.pixelSize) == tileX
+				&& (int) (gm.getObject("enemy"+i).getPosY() / GameManager.pixelSize) == tileY)) {
+					this.dead = true;
+				}
+
+				// Desaparición del enemigo
+				if (((int) (gm.getObject("enemy"+i).getPosX() / GameManager.pixelSize) == tileX
+				&& (int) (gm.getObject("enemy"+i).getPosY() / GameManager.pixelSize) == tileY)) {
+					gm.getObject("enemy"+i).dead = true;
+				}
+
+			} catch (NullPointerException e) {}
+		}
 
 		posX = tileX * GameManager.pixelSize + offX;
 		posY = tileY * GameManager.pixelSize + offY;
@@ -101,9 +107,9 @@ public class Bullet extends GameObject {
 		light = new Light(20, 0xffff0000);
 		r.drawLight(light, (int) posX + 2, (int) posY - 1);
 		if (direction==0) {
-			r.drawFillRect((int) posX - 2, (int) posY - 2, 2, 10, 0xffff0000);
+			r.drawFillRect((int) posX - 2, (int) posY - 2, 2, 5, 0xffff0000);
 		} else {
-			r.drawFillRect((int) posX - 2, (int) posY - 2, 10, 2, 0xffff0000);
+			r.drawFillRect((int) posX - 2, (int) posY - 2, 5, 2, 0xffff0000);
 		}
 	}
 }

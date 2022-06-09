@@ -11,17 +11,19 @@ public class Player extends GameObject {
 	private int playerX;
 	private int playerY;
 
+	// Movimiento
 	private float offX;
 	private float offY;
 
+	// Velocidad
 	private float speed = 100;
 
-	private float fallSpeed = 10;
+	// Gravedad y variables de salto
+	private float gravity = 10;
 	private float jump = -4;
-	private boolean ground = false;
-
 	private float fallDistance = 0;
-	private boolean limitJump = true;
+	private boolean ground = false;
+	private int jumps = 0;
 
 	private Light light;
 
@@ -41,7 +43,9 @@ public class Player extends GameObject {
 	public void update(GameEngine ge, GameManager gm, float dt) {
 
 		// #region Movimiento derecha-izquierda
+		// L y J movimiento para teclado 60% sin flechas de direccion
 
+		// Derecha
 		if (ge.getInput().key(KeyEvent.VK_RIGHT) || ge.getInput().key(KeyEvent.VK_L)) {
 			if (ge.getInput().key(KeyEvent.VK_SHIFT)) {
 				//System.err.println("shift");
@@ -74,6 +78,7 @@ public class Player extends GameObject {
 			}
 		}
 
+		// Izquierda
 		if (ge.getInput().key(KeyEvent.VK_LEFT) || ge.getInput().key(KeyEvent.VK_J)) {
 			if (ge.getInput().key(KeyEvent.VK_SHIFT)) {
 				//System.err.println("shift");
@@ -125,29 +130,21 @@ public class Player extends GameObject {
 				// ground = false;
 				// }
 
-		fallDistance += dt * fallSpeed;
+		fallDistance += dt * gravity;
 
-		if (ge.getInput().key(KeyEvent.VK_SPACE) && limitJump) {
+		if (ge.getInput().keyDown(KeyEvent.VK_SPACE)) {
+			jumps++;
+		}
+		// System.err.println(jumps);
 
-			if (ground) {
-				fallDistance = jump;
-			} else {
-				fallDistance += jump;
-				limitJump = true;
-				ground = false;
-			}
-			
-			System.out.println("limit"+limitJump);
-
-			// fallDistance = jump;
-			// doubleJump = false;
-			// ground = false;
-			// if (ge.getInput().key(KeyEvent.VK_SPACE) && !doubleJump) {
-			// 	System.out.println("uwu");
-			// 	fallDistance += jump;
-			// 	doubleJump = true;
-			// }
-			// limitJump = false;
+		if (ge.getInput().keyDown(KeyEvent.VK_SPACE) && ground) {
+			fallDistance = jump;
+			ground = false;
+		}
+		
+		if (jumps == 2) {
+			fallDistance = jump+1;
+			jumps++;
 		}
 
 		offY += fallDistance;
@@ -163,12 +160,13 @@ public class Player extends GameObject {
 		}
 
 		if (fallDistance > 0) {
-			if ((gm.getCollision(playerX, playerY + 1) || gm.getCollision(playerX + (int) Math.signum((int) offX), playerY + 1))
-					&& offY > 0) {
+			if ((gm.getCollision(playerX, playerY + 1) ||
+					gm.getCollision(playerX + (int) Math.signum((int) offX), playerY + 1)) &&
+					offY > 0) {
 				fallDistance = 0;
 				offY = 0;
 				ground = true;
-				limitJump = true;
+				jumps = 0;
 			}
 		}
 
@@ -209,9 +207,9 @@ public class Player extends GameObject {
 		if (ge.getInput().keyDown(KeyEvent.VK_D)) {
 			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 1));
 		}
-		if (ge.getInput().keyDown(KeyEvent.VK_S)) {
-			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 2));
-		}
+		// if (ge.getInput().keyDown(KeyEvent.VK_S)) {
+		// 	gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 2));
+		// }
 		if (ge.getInput().keyDown(KeyEvent.VK_A)) {
 			gm.addObject(new Bullet(playerX, playerY, offX + width / 2, offY + height / 2, 3));
 		}

@@ -21,12 +21,22 @@ public class GameManager extends AbstractGame {
 	private int levelW;
 	private int levelH;
 
+	public int numEnemigos = 0;
+
 	// private SoundClip backSong = new SoundClip("/resources/audio/test.wav");
 
 	public GameManager() {
 		objects.add(new Player(3, 34));
-		objects.add(new Enemy(38, 27, 46, 1));
-		objects.add(new Enemy(12, 13, 17, 2));
+
+		objects.add(new Enemy(38, 27, 46, 0));
+		objects.add(new Enemy(12, 13, 17, 1));
+		objects.add(new Enemy(76, 13, 91, 2));
+		objects.add(new Enemy(73, 6, 88, 3));
+		objects.add(new Enemy(86, 37, 93, 4));
+		objects.add(new Enemy(46, 7, 54, 5));
+		objects.add(new Enemy(27, 3, 31, 6));
+		numEnemigos = 7;
+
 		loadLevel("/resources/img/ConceptMap.png");
 		camera = new Camera("player");
 		// 	levelImag.setAlpha(true);
@@ -99,15 +109,6 @@ public class GameManager extends AbstractGame {
 	public GameObject getObject(String tag) {
 		for (int i = 0; i < objects.size(); i++) {
 			if (objects.get(i).getTag().equals(tag)) {
-				return objects.get(i);
-			}
-		}
-		return null;
-	}
-
-	public GameObject getNumber(int number) {
-		for (int i = 0; i < objects.size(); i++) {
-			if (objects.get(i).getNumber() == number) {
 				return objects.get(i);
 			}
 		}
