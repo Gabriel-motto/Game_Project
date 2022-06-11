@@ -263,12 +263,12 @@ public class Renderer {
 	}
 
 	// Draw Image Tile
-	public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY) {
+	public void drawImageTile(ImageTile image, int offX, int offY, int animation, int direction) {
 		offX -= camX;
 		offY -= camY;
 
 		if (image.isAlpha() && !processing) {
-			imgReq.add(new ImageRequest(image.getTileImage(tileX, tileY), zDepth, offX, offY));
+			imgReq.add(new ImageRequest(image.getTileImage(animation, direction), zDepth, offX, offY));
 			return;
 		}
 
@@ -307,8 +307,8 @@ public class Renderer {
 
 		for (int y = newY; y < newHeight; y++) {
 			for (int x = newX; x < newWidth; x++) {
-				setPixel(x + offX, y + offY, image.getP()[(x + tileX * image.getTileW())
-						+ (y + tileY * image.getTileH()) * image.getW()]);
+				setPixel(x + offX, y + offY, image.getP()[(x + animation * image.getTileW())
+						+ (y + direction * image.getTileH()) * image.getW()]);
 				setLightBlock(x + offX, y + offY, image.getLightBlock());
 			}
 		}
